@@ -12,9 +12,6 @@ public class ImageTracker : MonoBehaviour
     [SerializeField]
     private GameObject[] placeablePrefabs;
 
-    [SerializeField]
-    private Vector3 spawnOffset = new Vector3(0, 0, 0);
-
     private Dictionary<string, GameObject> spawnedPrefabs = new Dictionary<string, GameObject>();
 
     private void Start()
@@ -59,20 +56,24 @@ public class ImageTracker : MonoBehaviour
     {
         if(trackedImage != null)
         {
-            GameObject prefab = spawnedPrefabs[trackedImage.referenceImage.name];
-
             if (trackedImage.trackingState == TrackingState.Limited || trackedImage.trackingState == TrackingState.None)
             {
                 //Disable the associated content
+                spawnedPrefabs[trackedImage.referenceImage.name].transform.SetParent(null);
                 spawnedPrefabs[trackedImage.referenceImage.name].SetActive(false);
             }
             else if (trackedImage.trackingState == TrackingState.Tracking)
             {
+                Debug.Log(trackedImage.gameObject.name + " is being tracked.");
                 //Enable the associated content
-                Vector3 offsetPosition = trackedImage.transform.TransformPoint(spawnOffset);
-                prefab.transform.position = offsetPosition;
-                prefab.transform.rotation = trackedImage.transform.rotation;
-                prefab.SetActive(true);
+                if(spawnedPrefabs[trackedImage.referenceImage.name].transform.parent != trackedImage.transform)
+                {
+                    Debug.Log("Enabling associated content: " + spawnedPrefabs[trackedImage.referenceImage.name].name);
+                    spawnedPrefabs[trackedImage.referenceImage.name].transform.SetParent(trackedImage.transform);
+                    spawnedPrefabs[trackedImage.referenceImage.name].transform.localPosition = Vector3.zero;
+                    spawnedPrefabs[trackedImage.referenceImage.name].transform.localRotation = Quaternion.identity;
+                    spawnedPrefabs[trackedImage.referenceImage.name].SetActive(true);
+                }
             }
         }
     }

@@ -1147,7 +1147,6 @@ MonoBehaviour:
   trackedImageManager: {fileID: 279393828}
   placeablePrefabs:
   - {fileID: 8877356076264606421, guid: 1815046bfff85db439791fb5eac117a0, type: 3}
-  spawnOffset: {x: 0, y: 0.1, z: 0}
 --- !u!1001 &331264285
 PrefabInstance:
   m_ObjectHideFlags: 0
