@@ -60,11 +60,11 @@
         "*.asset": "yaml",
         "*.meta": "yaml",
         "*.prefab": "yaml",
-        "*.unity": "yaml",
+        "*.unity": "yaml"
     },
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
-        "*.sln": "*.csproj",
+        "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "DDA x ITD.sln"
+    "dotnet.defaultSolution": "DDA_x_ITD.sln"
 }
