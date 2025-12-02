@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
-using Firebase.database;
 using Firebase.Extensions;
 using TMPro; 
-using UnityEditor.PackageManager; 
 using UnityEngine;
 
 public class DataBaseManager : MonoBehaviour
@@ -16,18 +14,15 @@ public class DataBaseManager : MonoBehaviour
 
     public TMP_Text errorText;
 
-    public void SignUp();
+    public void SignUp()
     {
-        errorText.text; = "";
+        errorText.text = "";
 
         var createTask = FirebaseAuth.DefaultInstance.CreateUserWithEmailAndPasswordAsync(emailInput.text, passwordInput.text);
         createTask.ContinueWithOnMainThread(task =>
         {
-            if(task.IsFaulted)
-            {
-                var baseException = task.FromException.GetBaseException();
-            }
-        })
+        
+        });
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
