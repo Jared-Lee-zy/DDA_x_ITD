@@ -25,5 +25,15 @@ MonoBehaviour:
       m_GuidHigh: 4468001116175976728
     m_Size: {x: 0.1, y: 0.1}
     m_SpecifySize: 1
-    m_Name: blue_guitar
+    m_Name: guitar
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4926141749746499990
+      m_GuidHigh: 8398486679301723552
+    m_SerializedTextureGuid:
+      m_GuidLow: 14939798646839506951
+      m_GuidHigh: 16612387542355233848
+    m_Size: {x: 0.1, y: 0.1}
+    m_SpecifySize: 1
+    m_Name: piano
     m_Texture: {fileID: 0}

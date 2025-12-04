@@ -1324,7 +1324,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackedImageManager: {fileID: 279393828}
   placeablePrefabs:
-  - {fileID: 8877356076264606421, guid: 1815046bfff85db439791fb5eac117a0, type: 3}
+  - {fileID: 1777035583885138229, guid: c88cdb15a9903da44b2253211391c140, type: 3}
+  - {fileID: 7018172268107712924, guid: b012355474934374f98e212a455d926b, type: 3}
 --- !u!1001 &331264285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5584,7 +5585,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1277021230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9562,7 +9563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2099970466
 MonoBehaviour:
   m_ObjectHideFlags: 0
