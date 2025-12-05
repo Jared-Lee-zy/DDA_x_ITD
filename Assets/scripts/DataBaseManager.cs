@@ -5,7 +5,6 @@ using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 using TMPro;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class DataBaseManager : MonoBehaviour
@@ -14,6 +13,8 @@ public class DataBaseManager : MonoBehaviour
     public TMP_InputField passwordinput;
 
     public TMP_Text errorText;
+
+    public GameObject SignupCanvas;
 
     public void SignUp()
     {
@@ -77,12 +78,15 @@ public class DataBaseManager : MonoBehaviour
 
                 var uid = task.Result.User.UserId;
                 Debug.Log($"User signed up successfully: {uid}");
+                SignupCanvas.SetActive(false);
             }
         });
     }
 
     public void SignIn()
     {
+        errorText.text = "";
+
         var signInTask = FirebaseAuth.DefaultInstance.SignInWithEmailAndPasswordAsync(emailinput.text, passwordinput.text);
         signInTask.ContinueWithOnMainThread(task =>
         {
@@ -105,20 +109,16 @@ public class DataBaseManager : MonoBehaviour
                             errorText.text = "Please enter a password!";
                             break;
 
-                        case AuthError.WeakPassword:
-                            errorText.text = "Please enter a password 6 characters or longer!";
-                            break;
-
-                        case AuthError.EmailAlreadyInUse:
-                            errorText.text = "The email address is already in use by another account!";
-                            break;
-
                         case AuthError.InvalidEmail:
                             errorText.text = "The email address is invalid!";
                             break;
 
+                        case AuthError.UserNotFound:
+                            errorText.text = "The email address is not found!";
+                            break;
+
                         case AuthError.WrongPassword:
-                            errorText.text = "The paddword is incorrect!";
+                            errorText.text = "The password is incorrect!";
                             break;
 
                         default:
@@ -129,7 +129,8 @@ public class DataBaseManager : MonoBehaviour
                     return;
                 }
 
-                errorText.text = $"Unknown exception when signing up: {baseException.Message}";
+                errorText.text = $"Unknown exception when signing in: {baseException.Message}";
+                Debug.LogError(errorText.text);
                 return;
             }
 
@@ -145,6 +146,7 @@ public class DataBaseManager : MonoBehaviour
 
                 var uid = task.Result.User.UserId;
                 Debug.Log($"User signed in successfully: {uid}");
+                SignupCanvas.SetActive(false);
             }
         });
 

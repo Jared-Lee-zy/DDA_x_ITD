@@ -12,6 +12,8 @@ public class ImageTracker : MonoBehaviour
     [SerializeField]
     private GameObject[] placeablePrefabs;
 
+    public Vector3 rotationOffset = new Vector3(0, 180, 0);
+
     private Dictionary<string, GameObject> spawnedPrefabs = new Dictionary<string, GameObject>();
 
     private Dictionary<GameObject, GameObject> spawnedObjects = new Dictionary<GameObject, GameObject>();
@@ -76,8 +78,13 @@ public class ImageTracker : MonoBehaviour
                     Debug.Log("Enabling associated content: " + spawnedPrefabs[trackedImage.referenceImage.name].name);
                     spawnedPrefabs[trackedImage.referenceImage.name].transform.SetParent(trackedImage.transform);
                     spawnedPrefabs[trackedImage.referenceImage.name].transform.localPosition = spawnedObjects[spawnedPrefabs[trackedImage.referenceImage.name]].transform.localPosition;
-                    spawnedPrefabs[trackedImage.referenceImage.name].transform.rotation = Quaternion.Euler(0, 0, 0);
+                    Vector3 imageForward = trackedImage.transform.forward; // image's facing direction
+                    Vector3 lookDirection = -imageForward;                 // opposite direction
+                    Quaternion lookRotation = Quaternion.LookRotation(lookDirection, trackedImage.transform.up);
 
+                    // Apply extra offset so you can control how the prefab faces
+                    spawnedPrefabs[trackedImage.referenceImage.name].transform.rotation = 
+                        lookRotation * Quaternion.Euler(rotationOffset);
                     spawnedPrefabs[trackedImage.referenceImage.name].SetActive(true);
                 }
             }
