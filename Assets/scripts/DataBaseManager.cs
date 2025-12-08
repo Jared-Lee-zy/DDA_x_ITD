@@ -16,6 +16,10 @@ public class DataBaseManager : MonoBehaviour
 
     public GameObject SignupCanvas;
 
+    public static string currentUser;
+
+    public int highScore = 0;
+
     public void SignUp()
     {
         errorText.text = "";
@@ -76,8 +80,17 @@ public class DataBaseManager : MonoBehaviour
             {
                 errorText.text = "User created successfully, please sign in!";
 
-                var uid = task.Result.User.UserId;
+                FirebaseUser newUser = task.Result.User;
+                string uid = newUser.UserId;
+                string email = newUser.Email;
+
+                currentUser = email;
+                
+                mDatabaseRef.Child("users").Child(uid).Child("email").SetValueAsync(email);
+                mDatabaseRef.Child("users").Child(uid).Child("highscore").SetValueAsync(highScore);
+
                 Debug.Log($"User signed up successfully: {uid}");
+
                 SignupCanvas.SetActive(false);
             }
         });
@@ -144,7 +157,12 @@ public class DataBaseManager : MonoBehaviour
             {
                 errorText.text = "User successfully signed in!";
 
-                var uid = task.Result.User.UserId;
+                FirebaseUser user = task.Result.User;
+                string uid = user.UserId;
+                string email = user.Email;
+
+                currentUser = email;
+
                 Debug.Log($"User signed in successfully: {uid}");
                 SignupCanvas.SetActive(false);
             }
