@@ -12,6 +12,10 @@ public class ChordButton : MonoBehaviour
     public void ShowAChord()
     {
         aChordImage.SetActive(true);
+        cChordImage.SetActive(false);
+        gChordImage.SetActive(false);
+        dChordImage.SetActive(false);
+        eChordImage.SetActive(false);
     }
 
     public void HideAChord()
@@ -22,6 +26,10 @@ public class ChordButton : MonoBehaviour
     public void ShowCChord()
     {
         cChordImage.SetActive(true);
+        aChordImage.SetActive(false);
+        gChordImage.SetActive(false);
+        dChordImage.SetActive(false);
+        eChordImage.SetActive(false);
     }
     public void HideCChord()
     {
@@ -30,6 +38,10 @@ public class ChordButton : MonoBehaviour
     public void ShowGChord()
     {
         gChordImage.SetActive(true);
+        aChordImage.SetActive(false);
+        cChordImage.SetActive(false);
+        dChordImage.SetActive(false);
+        eChordImage.SetActive(false);
     }
     public void HideGChord()
     {
@@ -38,6 +50,10 @@ public class ChordButton : MonoBehaviour
     public void ShowDChord()
     {
         dChordImage.SetActive(true);
+        aChordImage.SetActive(false);
+        cChordImage.SetActive(false);
+        gChordImage.SetActive(false);
+        eChordImage.SetActive(false);
     }
     public void HideDChord()
     {
@@ -46,6 +62,10 @@ public class ChordButton : MonoBehaviour
     public void ShowEChord()
     {
         eChordImage.SetActive(true);
+        aChordImage.SetActive(false);
+        cChordImage.SetActive(false);
+        gChordImage.SetActive(false);
+        dChordImage.SetActive(false);
     }
     public void HideEChord()
     {
