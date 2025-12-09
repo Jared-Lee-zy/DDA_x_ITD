@@ -5586,7 +5586,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1277021230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7426,6 +7426,7 @@ MonoBehaviour:
   passwordinput: {fileID: 1572631496}
   errorText: {fileID: 402748450}
   SignupCanvas: {fileID: 1277021229}
+  highScore: 0
 --- !u!4 &1556179237
 Transform:
   m_ObjectHideFlags: 0
