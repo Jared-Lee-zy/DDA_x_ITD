@@ -23,9 +23,9 @@ MonoBehaviour:
       m_GuidLow: 4883120102675016819
       m_GuidHigh: 12082135070906577311
     m_SerializedTextureGuid:
-      m_GuidLow: 10512696193661528798
-      m_GuidHigh: 4468001116175976728
-    m_Size: {x: 0.1, y: 0.1}
+      m_GuidLow: 6571996975785224384
+      m_GuidHigh: 15225604788728220954
+    m_Size: {x: 0.1, y: 0.14159292}
     m_SpecifySize: 1
     m_Name: guitar
     m_Texture: {fileID: 0}

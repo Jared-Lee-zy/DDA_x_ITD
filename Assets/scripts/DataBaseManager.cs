@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
@@ -16,57 +15,38 @@ public class DataBaseManager : MonoBehaviour
 
     public GameObject SignupCanvas;
 
-    public static string currentUser;
+    public static string currentUser;  // NOW STORES UID
 
-    public int highScore = 0;
+    private float guitBestTime;
+
+    private DatabaseReference mDatabaseRef;
+
+    void Start()
+    {
+        mDatabaseRef = FirebaseDatabase.DefaultInstance.RootReference;
+    }
 
     public void SignUp()
     {
         errorText.text = "";
 
-        var createTask = FirebaseAuth.DefaultInstance.CreateUserWithEmailAndPasswordAsync(emailinput.text, passwordinput.text);
+        var createTask = FirebaseAuth.DefaultInstance
+            .CreateUserWithEmailAndPasswordAsync(emailinput.text, passwordinput.text);
+
+        void CreatePlayerDetails(string uid, string email, float guitBesttime)
+            {
+                player playerinformation = new player(email, guitBesttime);
+
+                string json = JsonUtility.ToJson(playerinformation);
+
+                mDatabaseRef.Child("users").Child(uid).SetRawJsonValueAsync(json);
+            }
+
         createTask.ContinueWithOnMainThread(task =>
         {
             if (task.IsFaulted)
             {
-                var baseException = task.Exception.GetBaseException();
-
-                if (baseException is FirebaseException)
-                {
-                    var firebaseException = baseException as FirebaseException;
-                    var errorCode = (AuthError)firebaseException.ErrorCode;
-
-                    switch (errorCode)
-                    {
-                        case AuthError.MissingEmail:
-                            errorText.text = "Please enter an email address!";
-                            break;
-
-                        case AuthError.MissingPassword:
-                            errorText.text = "Please enter a password!";
-                            break;
-
-                        case AuthError.WeakPassword:
-                            errorText.text = "Please enter a password 6 characters or longer!";
-                            break;
-
-                        case AuthError.EmailAlreadyInUse:
-                            errorText.text = "The email address is already in use by another account!";
-                            break;
-
-                        case AuthError.InvalidEmail:
-                            errorText.text = "The email address is invalid!";
-                            break;
-
-                        default:
-                            errorText.text = $"Unknown Firebase exception: {errorCode}";
-                            break;
-
-                    }
-                    return;
-                }
-
-                errorText.text = $"Unknown exception when signing up: {baseException.Message}";
+                HandleAuthErrors(task.Exception);
                 return;
             }
 
@@ -78,20 +58,14 @@ public class DataBaseManager : MonoBehaviour
 
             if (task.IsCompletedSuccessfully)
             {
-                errorText.text = "User created successfully, please sign in!";
 
-                FirebaseUser newUser = task.Result.User;
-                string uid = newUser.UserId;
-                string email = newUser.Email;
+                // Save UID globally
+                currentUser = task.Result.User.UserId;
 
-                currentUser = email;
-                
-                mDatabaseRef.Child("users").Child(uid).Child("email").SetValueAsync(email);
-                mDatabaseRef.Child("users").Child(uid).Child("highscore").SetValueAsync(highScore);
-
-                Debug.Log($"User signed up successfully: {uid}");
-
+                CreatePlayerDetails(task.Result.User.UserId, emailinput.text, 9999f);
+                errorText.text = "User created successfully!";
                 SignupCanvas.SetActive(false);
+
             }
         });
     }
@@ -100,88 +74,85 @@ public class DataBaseManager : MonoBehaviour
     {
         errorText.text = "";
 
-        var signInTask = FirebaseAuth.DefaultInstance.SignInWithEmailAndPasswordAsync(emailinput.text, passwordinput.text);
+        var signInTask = FirebaseAuth.DefaultInstance
+            .SignInWithEmailAndPasswordAsync(emailinput.text, passwordinput.text);
+
         signInTask.ContinueWithOnMainThread(task =>
         {
             if (task.IsFaulted)
             {
-                var baseException = task.Exception.GetBaseException();
-
-                if (baseException is FirebaseException)
-                {
-                    var firebaseException = baseException as FirebaseException;
-                    var errorCode = (AuthError)firebaseException.ErrorCode;
-
-                    switch (errorCode)
-                    {
-                        case AuthError.MissingEmail:
-                            errorText.text = "Please enter an email address!";
-                            break;
-
-                        case AuthError.MissingPassword:
-                            errorText.text = "Please enter a password!";
-                            break;
-
-                        case AuthError.InvalidEmail:
-                            errorText.text = "The email address is invalid!";
-                            break;
-
-                        case AuthError.UserNotFound:
-                            errorText.text = "The email address is not found!";
-                            break;
-
-                        case AuthError.WrongPassword:
-                            errorText.text = "The password is incorrect!";
-                            break;
-
-                        default:
-                            errorText.text = $"Unknown Firebase exception: {errorCode}";
-                            break;
-
-                    }
-                    return;
-                }
-
-                errorText.text = $"Unknown exception when signing in: {baseException.Message}";
-                Debug.LogError(errorText.text);
+                HandleAuthErrors(task.Exception);
                 return;
             }
 
             if (task.IsCanceled)
             {
-                Debug.Log("Can't sign in due to error!!!");
+                errorText.text = "Sign in cancelled!";
                 return;
             }
 
             if (task.IsCompletedSuccessfully)
             {
-                errorText.text = "User successfully signed in!";
-
                 FirebaseUser user = task.Result.User;
-                string uid = user.UserId;
-                string email = user.Email;
+                mDatabaseRef.Child("users").Child(user.UserId).Child("guitBesttime").GetValueAsync().ContinueWithOnMainThread(t =>
+                {
+                    if (t.IsCompleted && t.Result.Exists)
+                    {
+                        float.TryParse(t.Result.Value.ToString(), out guitBestTime);
+                        Debug.Log("Loaded best time: " + guitBestTime);
+                    }
+                });
 
-                currentUser = email;
+                // Store UID globally
+                currentUser = user.UserId;
 
-                Debug.Log($"User signed in successfully: {uid}");
+                errorText.text = "Login successful!";
                 SignupCanvas.SetActive(false);
+
+                Debug.Log("User signed in: " + user.UserId);
             }
         });
-
-        Debug.Log("HAHAHAHHA");
-    }
-    DatabaseReference mDatabaseRef;
-    void Start()
-    {
-
-        mDatabaseRef = FirebaseDatabase.DefaultInstance.RootReference;
-
     }
 
-
-    // Update is called once per frame
-    void Update()
+    private void HandleAuthErrors(AggregateException exception)
     {
+        var baseException = exception.GetBaseException();
 
+        if (baseException is FirebaseException firebaseEx)
+        {
+            var errorCode = (AuthError)firebaseEx.ErrorCode;
+
+            switch (errorCode)
+            {
+                case AuthError.MissingEmail:
+                    errorText.text = "Please enter an email!";
+                    break;
+                case AuthError.MissingPassword:
+                    errorText.text = "Please enter a password!";
+                    break;
+                case AuthError.WeakPassword:
+                    errorText.text = "Password must be at least 6 characters!";
+                    break;
+                case AuthError.EmailAlreadyInUse:
+                    errorText.text = "Email already in use!";
+                    break;
+                case AuthError.UserNotFound:
+                    errorText.text = "User not found!";
+                    break;
+                case AuthError.InvalidEmail:
+                    errorText.text = "Invalid email address!";
+                    break;
+                case AuthError.WrongPassword:
+                    errorText.text = "Wrong password!";
+                    break;
+                default:
+                    errorText.text = "Username or Password incorrect!";
+                    break;
+            }
+        }
+        else
+        {
+            errorText.text = "Error: " + baseException.Message;
+        }
     }
 }
