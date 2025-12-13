@@ -8,7 +8,7 @@ using Firebase.Auth;
 using Firebase.Extensions;
 using System.Threading.Tasks;
 
-public class QuizFlowManager : MonoBehaviour
+public class PianoQuizFlowManager : MonoBehaviour
 {
     public GameObject[] questionPanels; // size = 7
     public GameObject resultPanel;
@@ -184,26 +184,22 @@ public class QuizFlowManager : MonoBehaviour
         }
     }
 
-    private IEnumerator Updatedelay()
-    {
-        yield return new WaitForSeconds(2f);
-    }
-    void EndQuiz()
+    async void EndQuiz()
     {
         timerRunning = false;
         finalTime = Time.time - quizStartTime;
+        finalTime = Mathf.Round(finalTime * 100f) / 100f;
 
         foreach (var p in questionPanels)
             p.SetActive(false);
 
-
         resultPanel.SetActive(true);
-        UpdateBestTime(finalTime);
-        StartCoroutine(Updatedelay());
 
         resultText.text = "Your Score: " + score + " / " + questionPanels.Length;
-        finalTime = Mathf.Round(finalTime * 100f) / 100f;
         timerText.text = "Time: " + finalTime + " seconds";
+
+        await UpdateBestTime(finalTime);
+
         FetchCurrentBestTime();
     }
 
@@ -214,60 +210,52 @@ public class QuizFlowManager : MonoBehaviour
         bestTimeText.text = "Best Time: " + bestFinalTime + " seconds";
     }
 
-    public async void UpdateBestTime(float newTime)
+    public async Task<bool> UpdateBestTime(float newTime)
     {
-        string uid = DataBaseManager.currentUser;
         FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
-        if (string.IsNullOrEmpty(user.UserId))
+        if (user == null)
         {
-            Debug.Log("No UID found — user not logged in.");
-            return;
+            Debug.Log("No user logged in.");
+            return false;
         }
 
-        newTime = Mathf.Round(newTime * 100f) / 100f; // round to 2 decimals
+        newTime = Mathf.Round(newTime * 100f) / 100f;
 
         try
-        { 
-            var snapshotReference = mDatabaseRef.Child("users").Child(user.UserId).GetValueAsync();
-            await snapshotReference.ContinueWithOnMainThread(task =>
-            {
-                if (task.IsFaulted)
-                {
-                    return;
-                }
-
-                if (task.IsCompleted)
-                {
-                    string playerData = task.Result.GetRawJsonValue();
-                    player existingPlayer = JsonUtility.FromJson<player>(playerData);
-                   
-                    if (existingPlayer != null)
-                    {
-                        float existingBestTime = existingPlayer.guitBesttime;
-                        if (newTime < existingBestTime)
-                        {
-                            
-                            // Update best time in the player object
-                            existingPlayer.guitBesttime = newTime;
-
-                            // Convert back to JSON
-                            string updatedJson = JsonUtility.ToJson(existingPlayer);
-
-                            // Update the database
-                            mDatabaseRef.Child("users").Child(user.UserId).SetRawJsonValueAsync(updatedJson);
-                            Debug.Log("Best time updated to: " + newTime);
-                        }
-                        else
-                        {
-                            Debug.Log("New time is not better than existing best time.");
-                        }
-                    }
-                }
-            });
-        }catch (System.Exception e)
         {
-            Debug.LogError("Exception while updating best time: " + e.Message);
+            var snapshot = await mDatabaseRef
+                .Child("users")
+                .Child(user.UserId)
+                .GetValueAsync();
+
+            string playerData = snapshot.GetRawJsonValue();
+            player existingPlayer = JsonUtility.FromJson<player>(playerData);
+
+            if (existingPlayer == null)
+                return false;
+
+            float existingBestTime = existingPlayer.pianoBesttime;
+
+            if (existingBestTime == 0 || newTime < existingBestTime)
+            {
+                existingPlayer.pianoBesttime = newTime;
+                string updatedJson = JsonUtility.ToJson(existingPlayer);
+
+                await mDatabaseRef
+                    .Child("users")
+                    .Child(user.UserId)
+                    .SetRawJsonValueAsync(updatedJson);
+
+                Debug.Log("Best time updated to: " + newTime);
+                return true;
+            }
         }
+        catch (System.Exception e)
+        {
+            Debug.LogError("UpdateBestTime error: " + e.Message);
+        }
+
+        return false;
     }
     
     public void FetchCurrentBestTime()
@@ -296,7 +284,7 @@ public class QuizFlowManager : MonoBehaviour
 
                     player objective = JsonUtility.FromJson<player>(playerData);
 
-                    bestFinalTime = objective.guitBesttime;
+                    bestFinalTime = objective.pianoBesttime;
 
                     UpdateBestFinalTime(bestFinalTime);
 

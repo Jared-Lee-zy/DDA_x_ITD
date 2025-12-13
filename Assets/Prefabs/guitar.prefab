@@ -17698,7 +17698,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3760252526663346027}
         m_TargetAssemblyTypeName: ChordMenu, Assembly-CSharp
-        m_MethodName: ShowChordPanel
+        m_MethodName: ToggleChordPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

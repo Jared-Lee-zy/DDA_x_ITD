@@ -4,13 +4,11 @@ public class ChordMenu : MonoBehaviour
 {
     public GameObject chordPanel;
 
-    public void ShowChordPanel()
+    public void ToggleChordPanel()
     {
-        chordPanel.SetActive(true);
-    }
-
-    public void HideChordPanel()
-    {
-        chordPanel.SetActive(false);
+        if (chordPanel != null)
+        {
+            chordPanel.SetActive(!chordPanel.activeSelf);
+        }
     }
 }

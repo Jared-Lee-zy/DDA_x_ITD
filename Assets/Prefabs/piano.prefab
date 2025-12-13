@@ -121,8 +121,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: SubmitOpenAnswer
         m_Mode: 2
         m_Arguments:
@@ -392,8 +392,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -895,8 +895,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -1028,8 +1028,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: ExitQuiz
         m_Mode: 1
         m_Arguments:
@@ -1161,8 +1161,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: PlayPreviewSound
         m_Mode: 3
         m_Arguments:
@@ -1563,8 +1563,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: StartQuiz
         m_Mode: 1
         m_Arguments:
@@ -1794,8 +1794,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7005894685469370066}
-  - component: {fileID: 2522094888149923703}
   - component: {fileID: 294628571458623801}
+  - component: {fileID: 9111575221968302641}
   m_Layer: 0
   m_Name: QuizFlowManager
   m_TagString: Untagged
@@ -1818,38 +1818,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5636270191784611318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2522094888149923703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 719136501084759195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a655064bc5503548b119a8f8a043e80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  questionPanels:
-  - {fileID: 2544264530824762996}
-  - {fileID: 142110132634296148}
-  - {fileID: 5621182861112621821}
-  - {fileID: 5530103943432618319}
-  - {fileID: 8545739200429368010}
-  - {fileID: 5007306683617907250}
-  resultPanel: {fileID: 6711232851121045345}
-  bestTimeText: {fileID: 1124820997773346310}
-  timerText: {fileID: 2357949973540552870}
-  resultText: {fileID: 1292582557566565120}
-  audioSource: {fileID: 294628571458623801}
-  previewClips:
-  - {fileID: 8300000, guid: 3f2e27971f06d504ea24d4ffa5bc2c16, type: 3}
-  - {fileID: 8300000, guid: 12810703bdfd2b442aeed5ce4f44fa3e, type: 3}
-  - {fileID: 8300000, guid: 7fc71786f87ea994e8398232a48fa897, type: 3}
-  - {fileID: 8300000, guid: 9d40f6fba0038314485c81cbd1053324, type: 3}
-  correctOpenAnswer: C E G
-  quizCanvas: {fileID: 5721327180223287509}
-  startPanel: {fileID: 0}
 --- !u!82 &294628571458623801
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1947,6 +1915,38 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &9111575221968302641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719136501084759195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58271180b6df0574ebc07185158714fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questionPanels:
+  - {fileID: 2544264530824762996}
+  - {fileID: 142110132634296148}
+  - {fileID: 5621182861112621821}
+  - {fileID: 5530103943432618319}
+  - {fileID: 8545739200429368010}
+  - {fileID: 5007306683617907250}
+  resultPanel: {fileID: 6711232851121045345}
+  bestTimeText: {fileID: 1124820997773346310}
+  timerText: {fileID: 2357949973540552870}
+  resultText: {fileID: 1292582557566565120}
+  audioSource: {fileID: 294628571458623801}
+  previewClips:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  correctOpenAnswer: C E G
+  quizCanvas: {fileID: 5721327180223287509}
+  startPanel: {fileID: 0}
 --- !u!1 &846479071753681212
 GameObject:
   m_ObjectHideFlags: 0
@@ -2068,8 +2068,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -2203,7 +2203,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8097160013362599399}
         m_TargetAssemblyTypeName: ChordMenu, Assembly-CSharp
-        m_MethodName: ShowChordPanel
+        m_MethodName: ToggleChordPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2875,8 +2875,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -4054,8 +4054,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -4187,8 +4187,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -4592,8 +4592,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: PlayPreviewSound
         m_Mode: 3
         m_Arguments:
@@ -6161,8 +6161,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -6430,8 +6430,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -9402,8 +9402,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -9916,8 +9916,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -10053,8 +10053,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: PlayPreviewSound
         m_Mode: 3
         m_Arguments:
@@ -10918,8 +10918,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -11391,8 +11391,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -11664,8 +11664,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: PlayPreviewSound
         m_Mode: 3
         m_Arguments:
@@ -12606,8 +12606,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -13277,8 +13277,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -13410,8 +13410,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: PlayPreviewSound
         m_Mode: 3
         m_Arguments:
@@ -13751,8 +13751,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -14294,8 +14294,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: PlayPreviewSound
         m_Mode: 3
         m_Arguments:
@@ -14856,8 +14856,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -15671,8 +15671,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -17408,8 +17408,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -18292,8 +18292,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: PlayPreviewSound
         m_Mode: 3
         m_Arguments:
@@ -19644,8 +19644,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:
@@ -19829,8 +19829,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: PlayPreviewSound
         m_Mode: 3
         m_Arguments:
@@ -20234,8 +20234,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2522094888149923703}
-        m_TargetAssemblyTypeName: QuizFlowManager, Assembly-CSharp
+      - m_Target: {fileID: 9111575221968302641}
+        m_TargetAssemblyTypeName: PianoQuizFlowManager, Assembly-CSharp
         m_MethodName: AnswerMCQ
         m_Mode: 6
         m_Arguments:

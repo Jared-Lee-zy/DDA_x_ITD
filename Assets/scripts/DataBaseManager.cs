@@ -18,6 +18,7 @@ public class DataBaseManager : MonoBehaviour
     public static string currentUser;  // NOW STORES UID
 
     private float guitBestTime;
+    private float pianoBestTime;
 
     private DatabaseReference mDatabaseRef;
 
@@ -33,9 +34,9 @@ public class DataBaseManager : MonoBehaviour
         var createTask = FirebaseAuth.DefaultInstance
             .CreateUserWithEmailAndPasswordAsync(emailinput.text, passwordinput.text);
 
-        void CreatePlayerDetails(string uid, string email, float guitBesttime)
+        void CreatePlayerDetails(string uid, string email, float guitBesttime, float pianoBesttime)
             {
-                player playerinformation = new player(email, guitBesttime);
+                player playerinformation = new player(email, guitBesttime, pianoBesttime);
 
                 string json = JsonUtility.ToJson(playerinformation);
 
@@ -62,7 +63,7 @@ public class DataBaseManager : MonoBehaviour
                 // Save UID globally
                 currentUser = task.Result.User.UserId;
 
-                CreatePlayerDetails(task.Result.User.UserId, emailinput.text, 9999f);
+                CreatePlayerDetails(task.Result.User.UserId, emailinput.text, 9999f, 9999f);
                 errorText.text = "User created successfully!";
                 SignupCanvas.SetActive(false);
 
@@ -100,6 +101,15 @@ public class DataBaseManager : MonoBehaviour
                     {
                         float.TryParse(t.Result.Value.ToString(), out guitBestTime);
                         Debug.Log("Loaded best time: " + guitBestTime);
+                    }
+                });
+
+                mDatabaseRef.Child("users").Child(user.UserId).Child("pianoBesttime").GetValueAsync().ContinueWithOnMainThread(t =>
+                {
+                    if (t.IsCompleted && t.Result.Exists)
+                    {
+                        float.TryParse(t.Result.Value.ToString(), out pianoBestTime);
+                        Debug.Log("Loaded best time: " + pianoBestTime);
                     }
                 });
 
