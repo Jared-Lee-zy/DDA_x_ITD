@@ -367,4 +367,36 @@ public class PianoQuizFlowManager : MonoBehaviour
                 UpdateBestFinalTime(bestFinalTime);
             });
     }
+        /// <summary>
+    /// Plays a one-shot sound effect.
+    /// </summary>
+    void PlaySFX(AudioClip clip)
+    {
+        if (sfxSource != null && clip != null)
+            sfxSource.PlayOneShot(clip);
+    }
+
+    /// <summary>
+    /// Starts quiz background music.
+    /// </summary>
+    void PlayBGM()
+    {
+        if (bgmSource != null && quizBGM != null)
+        {
+            bgmSource.clip = quizBGM;
+            bgmSource.loop = true;
+            bgmSource.Play();
+        }
+    }
+
+    /// <summary>
+    /// Stops quiz background music.
+    /// </summary>
+    void StopBGM()
+    {
+        if (bgmSource != null)
+            bgmSource.Stop();
+    }
 }
+
+
