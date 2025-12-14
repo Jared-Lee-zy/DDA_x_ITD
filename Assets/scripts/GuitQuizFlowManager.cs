@@ -1,3 +1,7 @@
+///Made By Lim Xue Zhi Conan
+/// Date Of Creation  : 2025-12-11
+/// Function of Script: Manages the guitar quiz flow, including question navigation, scoring, timing, audio feedback, and Firebase best-time tracking.
+/// </summary>
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -8,39 +12,143 @@ using Firebase.Auth;
 using Firebase.Extensions;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Manages the guitar quiz flow, including question navigation, scoring,
+/// timing, audio feedback, and Firebase best-time tracking.
+/// </summary>
 public class GuitQuizFlowManager : MonoBehaviour
 {
-    public GameObject[] questionPanels; // size = 7
+    /// <summary>
+    /// Array of quiz question panels.
+    /// </summary>
+    public GameObject[] questionPanels;
+
+    /// <summary>
+    /// Panel shown when the quiz ends.
+    /// </summary>
     public GameObject resultPanel;
 
+    /// <summary>
+    /// Index of the current question.
+    /// </summary>
     int currentQuestion = 0;
+
+    /// <summary>
+    /// User's quiz score.
+    /// </summary>
     int score = 0;
 
+    /// <summary>
+    /// Time when the quiz started.
+    /// </summary>
     float quizStartTime;
+
+    /// <summary>
+    /// Final time taken to complete the quiz.
+    /// </summary>
     float finalTime;
+
+    /// <summary>
+    /// Best recorded completion time.
+    /// </summary>
     float bestFinalTime;
+
+    /// <summary>
+    /// Indicates whether the quiz timer is running.
+    /// </summary>
     bool timerRunning = false;
+
+    /// <summary>
+    /// Displays the user's best completion time.
+    /// </summary>
     public TextMeshProUGUI bestTimeText;
+
+    /// <summary>
+    /// Displays the current or final timer value.
+    /// </summary>
     public TextMeshProUGUI timerText;
+
+    /// <summary>
+    /// Firebase database reference.
+    /// </summary>
     public DatabaseReference mDatabaseRef;
+
+    /// <summary>
+    /// Firebase authentication instance.
+    /// </summary>
     private FirebaseAuth auth;
 
+    /// <summary>
+    /// Displays the final quiz score.
+    /// </summary>
     public TextMeshProUGUI resultText;
 
-    [Header("Sound Question Settings (Q4 & Q5)")]
+    /// <summary>
+    /// Audio source used for chord preview sounds.
+    /// </summary>
     public AudioSource audioSource;
+
+    /// <summary>
+    /// Audio clips used for chord preview buttons.
+    /// </summary>
     public AudioClip[] previewClips;
 
+    /// <summary>
+    /// Audio source used for feedback and UI sounds.
+    /// </summary>
+    public AudioSource sfxSource;
+
+    /// <summary>
+    /// Sound played when the user answers correctly.
+    /// </summary>
+    public AudioClip correctSound;
+
+    /// <summary>
+    /// Sound played when the user answers incorrectly.
+    /// </summary>
+    public AudioClip wrongSound;
+
+    /// <summary>
+    /// Sound played when the quiz is completed.
+    /// </summary>
+    public AudioClip quizCompleteSound;
+
+    /// <summary>
+    /// Audio source used for quiz background music.
+    /// </summary>
+    public AudioSource bgmSource;
+
+    /// <summary>
+    /// Background music played during the quiz.
+    /// </summary>
+    public AudioClip quizBGM;
+
+    /// <summary>
+    /// Correct answer string for open-ended questions.
+    /// </summary>
     public string correctOpenAnswer;
 
+    /// <summary>
+    /// Canvas containing the quiz UI.
+    /// </summary>
     public GameObject quizCanvas;
-    public GameObject startPanel;   // Optional: the panel with the “Start Quiz” button
 
-    // Called when user presses Start Quiz button
+    /// <summary>
+    /// Panel shown before starting the quiz.
+    /// </summary>
+    public GameObject startPanel;
+
+    /// <summary>
+    /// Starts the quiz, initializes timer, and plays background music.
+    /// </summary>
     public void StartQuiz()
     {
         if (startPanel != null)
             startPanel.SetActive(false);
+
+        ///summary> Shuffles the order of quiz questions randomly. </summary>
+        ShuffleQuestions();
+        currentQuestion = 0;
 
         quizCanvas.SetActive(true);
         ShowQuestion(0);
@@ -48,58 +156,73 @@ public class GuitQuizFlowManager : MonoBehaviour
         quizStartTime = Time.time;
         timerRunning = true;
 
+        PlayBGM();
     }
 
+    /// <summary>
+    /// Updates the timer text UI.
+    /// </summary>
     public void UpdateText(string newText)
     {
         if (timerText != null)
-        {
             timerText.text = newText.ToString();
-        }
-        else
-        {
-            Debug.LogWarning("Cannot update text — reference is missing.");
-        }
     }
 
-    // Called when user presses Exit Quiz button
+    /// <summary>
+    /// Exits the quiz and resets state.
+    /// </summary>
     public void ExitQuiz()
     {
+        StopBGM();
         quizCanvas.SetActive(false);
 
         if (startPanel != null)
             startPanel.SetActive(true);
 
-        // Reset score + question index if quiz restarts later
         currentQuestion = 0;
         score = 0;
     }
 
-
-
+    /// <summary>
+    /// Initializes Firebase and shows the first question.
+    /// </summary>
     void Start()
     {
         ShowQuestion(0);
         auth = FirebaseAuth.DefaultInstance;
         mDatabaseRef = FirebaseDatabase.DefaultInstance.RootReference;
-
-
     }
 
+    /// <summary>
+    /// Randomly shuffles the order of quiz questions.
+    void ShuffleQuestions()
+    {
+    for (int i = 0; i < questionPanels.Length; i++)
+    {
+        int randomIndex = Random.Range(i, questionPanels.Length);
+
+        GameObject temp = questionPanels[i];
+        questionPanels[i] = questionPanels[randomIndex];
+        questionPanels[randomIndex] = temp;
+    }
+    }
+
+    /// <summary>
+    /// Displays a specific question panel.
+    /// </summary>
     public void ShowQuestion(int index)
     {
-        // Hide everything
         foreach (var p in questionPanels)
             p.SetActive(false);
 
         resultPanel.SetActive(false);
-
-        // Show the target question
         questionPanels[index].SetActive(true);
         currentQuestion = index;
     }
 
-    // Called by MCQ buttons for Q1–5 (still works the same)
+    /// <summary>
+    /// Handles multiple-choice question answers.
+    /// </summary>
     public void AnswerMCQ(bool isCorrect)
     {
         GameObject qp = questionPanels[currentQuestion];
@@ -109,18 +232,19 @@ public class GuitQuizFlowManager : MonoBehaviour
         {
             feedback.text = "Correct!";
             score++;
-
+            PlaySFX(correctSound);
             Invoke(nameof(NextQuestion), 1.5f);
         }
         else
         {
             feedback.text = "Wrong! Try again.";
+            PlaySFX(wrongSound);
         }
-
-
     }
 
-    // Called by the open-answer questions (Q6–7)
+    /// <summary>
+    /// Handles open-ended question submissions.
+    /// </summary>
     public void SubmitOpenAnswer(TMP_InputField inputField)
     {
         string userAnswer = inputField.text.Trim().ToLower();
@@ -133,169 +257,148 @@ public class GuitQuizFlowManager : MonoBehaviour
         {
             feedback.text = "Correct!";
             score++;
-
+            PlaySFX(correctSound);
             Invoke(nameof(NextQuestion), 1.5f);
         }
         else
         {
             feedback.text = "Wrong! Try again.";
+            PlaySFX(wrongSound);
         }
-
     }
 
-
+    /// <summary>
+    /// Plays a chord preview sound.
+    /// </summary>
     public void PlayPreviewSound(int index)
     {
-        if (audioSource == null)
-        {
-            Debug.LogWarning("AudioSource not assigned in Inspector!");
+        if (audioSource == null || previewClips == null || index < 0 || index >= previewClips.Length)
             return;
-        }
-
-        if (previewClips == null || previewClips.Length == 0)
-        {
-            Debug.LogWarning("Preview clips array is empty!");
-            return;
-        }
-
-        if (index < 0 || index >= previewClips.Length)
-        {
-            Debug.LogWarning("PreviewSound index is out of range");
-            return;
-        }
 
         audioSource.Stop();
         audioSource.clip = previewClips[index];
         audioSource.Play();
     }
 
-
+    /// <summary>
+    /// Advances to the next question or ends the quiz.
+    /// </summary>
     void NextQuestion()
     {
         currentQuestion++;
 
         if (currentQuestion >= questionPanels.Length)
-        {
             EndQuiz();
-        }
         else
-        {
             ShowQuestion(currentQuestion);
-        }
     }
 
+    /// <summary>
+    /// Ends the quiz, stops music, plays completion sound, and updates Firebase.
+    /// </summary>
     async void EndQuiz()
     {
         timerRunning = false;
-        finalTime = Time.time - quizStartTime;
-        finalTime = Mathf.Round(finalTime * 100f) / 100f;
+        finalTime = Mathf.Round((Time.time - quizStartTime) * 100f) / 100f;
 
         foreach (var p in questionPanels)
             p.SetActive(false);
 
-        resultPanel.SetActive(true);
+        StopBGM();
+        PlaySFX(quizCompleteSound);
 
+        resultPanel.SetActive(true);
         resultText.text = "Your Score: " + score + " / " + questionPanels.Length;
         timerText.text = "Time: " + finalTime + " seconds";
 
         await UpdateBestTime(finalTime);
-
         FetchCurrentBestTime();
     }
 
 
+
+    /// <summary>
+    /// Updates the displayed best completion time.
+    /// </summary>
     public void UpdateBestFinalTime(float newBestTime)
     {
         bestFinalTime = newBestTime;
         bestTimeText.text = "Best Time: " + bestFinalTime + " seconds";
     }
 
+    /// <summary>
+    /// Updates the user's best time in Firebase if the new time is better.
+    /// </summary>
     public async Task<bool> UpdateBestTime(float newTime)
     {
         FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
         if (user == null)
-        {
-            Debug.Log("No user logged in.");
             return false;
-        }
 
         newTime = Mathf.Round(newTime * 100f) / 100f;
 
-        try
+        var snapshot = await mDatabaseRef.Child("users").Child(user.UserId).GetValueAsync();
+        player existingPlayer = JsonUtility.FromJson<player>(snapshot.GetRawJsonValue());
+
+        if (existingPlayer != null && (existingPlayer.guitBesttime == 0 || newTime < existingPlayer.guitBesttime))
         {
-            var snapshot = await mDatabaseRef
-                .Child("users")
-                .Child(user.UserId)
-                .GetValueAsync();
-
-            string playerData = snapshot.GetRawJsonValue();
-            player existingPlayer = JsonUtility.FromJson<player>(playerData);
-
-            if (existingPlayer == null)
-                return false;
-
-            float existingBestTime = existingPlayer.guitBesttime;
-
-            if (existingBestTime == 0 || newTime < existingBestTime)
-            {
-                existingPlayer.guitBesttime = newTime;
-                string updatedJson = JsonUtility.ToJson(existingPlayer);
-
-                await mDatabaseRef
-                    .Child("users")
-                    .Child(user.UserId)
-                    .SetRawJsonValueAsync(updatedJson);
-
-                Debug.Log("Best time updated to: " + newTime);
-                return true;
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("UpdateBestTime error: " + e.Message);
+            existingPlayer.guitBesttime = newTime;
+            await mDatabaseRef.Child("users").Child(user.UserId)
+                .SetRawJsonValueAsync(JsonUtility.ToJson(existingPlayer));
+            return true;
         }
 
         return false;
     }
-    
+
+    /// <summary>
+    /// Fetches the user's best time from Firebase.
+    /// </summary>
     public void FetchCurrentBestTime()
     {
         FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
-
         if (user == null)
-        {
-            Debug.Log("User not logged in.");
             return;
-        }
 
-        try
-        {
-            var snapshot = mDatabaseRef.Child("users").Child(user.UserId).GetValueAsync();
-            snapshot.ContinueWithOnMainThread(Task =>
+        mDatabaseRef.Child("users").Child(user.UserId).GetValueAsync()
+            .ContinueWithOnMainThread(task =>
             {
-                if (Task.IsFaulted || Task.IsCanceled)
+                if (task.IsCompleted)
                 {
-                    Debug.Log("Unable to fetch best time.");
-                }
-
-                if (Task.IsCompleted)
-                {
-                    string playerData = Task.Result.GetRawJsonValue();
-
-                    player objective = JsonUtility.FromJson<player>(playerData);
-
-                    bestFinalTime = objective.guitBesttime;
-
-                    UpdateBestFinalTime(bestFinalTime);
-
-                    Debug.Log("Fetched best time: " + bestFinalTime);
+                    player objective = JsonUtility.FromJson<player>(task.Result.GetRawJsonValue());
+                    UpdateBestFinalTime(objective.guitBesttime);
                 }
             });
-        }
-        catch (System.Exception e)
+    }
+
+    /// <summary>
+    /// Plays a one-shot sound effect.
+    /// </summary>
+    void PlaySFX(AudioClip clip)
+    {
+        if (sfxSource != null && clip != null)
+            sfxSource.PlayOneShot(clip);
+    }
+
+    /// <summary>
+    /// Starts quiz background music.
+    /// </summary>
+    void PlayBGM()
+    {
+        if (bgmSource != null && quizBGM != null)
         {
-            Debug.LogError("Failed to fetch best time: " + e.Message);
+            bgmSource.clip = quizBGM;
+            bgmSource.loop = true;
+            bgmSource.Play();
         }
     }
-}
 
+    /// <summary>
+    /// Stops quiz background music.
+    /// </summary>
+    void StopBGM()
+    {
+        if (bgmSource != null)
+            bgmSource.Stop();
+    }
+}

@@ -1,4 +1,6 @@
-
+///Made By Jared Lee Zhengyu
+/// Date Of Creation  : 2025-12-05
+/// Function of Script: Player data structure for Firebase integration.
 public class player
 {
     public string email;
