@@ -1,9 +1,8 @@
-///Made By Lim Xue Zhi Conan
-/// Date Of Creation  : 2025-12-10
-/// Function of Script: Manages the tutorial flow by showing tutorial panels one at a time.
 using UnityEngine;
 /// <summary>
-/// Manages the tutorial flow by showing tutorial panels one at a time.
+///Made By Lim Xue Zhi Conan
+/// Date Of Creation  : 14/12/2025
+/// Function of Script: Manages the tutorial flow by showing tutorial panels one at a time.
 /// Allows navigation using Back and Next buttons, and exits on the final panel.
 /// </summary>
 public class TutorialManager : MonoBehaviour

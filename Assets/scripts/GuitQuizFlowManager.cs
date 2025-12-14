@@ -1,7 +1,3 @@
-///Made By Lim Xue Zhi Conan
-/// Date Of Creation  : 2025-12-11
-/// Function of Script: Manages the guitar quiz flow, including question navigation, scoring, timing, audio feedback, and Firebase best-time tracking.
-/// </summary>
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -11,10 +7,10 @@ using Firebase.Database;
 using Firebase.Auth;
 using Firebase.Extensions;
 using System.Threading.Tasks;
-
 /// <summary>
-/// Manages the guitar quiz flow, including question navigation, scoring,
-/// timing, audio feedback, and Firebase best-time tracking.
+///Made By Lim Xue Zhi Conan and Jared Lee Zhengyu
+/// Date Of Creation  : 09/12/2025
+/// Function of Script: Manages the guitar quiz flow, including question navigation, scoring, timing, audio feedback, and Firebase best-time tracking.
 /// </summary>
 public class GuitQuizFlowManager : MonoBehaviour
 {
@@ -294,31 +290,32 @@ public class GuitQuizFlowManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Ends the quiz, stops music, plays completion sound, and updates Firebase.
+    /// Ends the quiz session, stops the timer, calculates the final completion time,
+    /// displays the result screen, and updates the user's best time in Firebase.
+    /// This method is asynchronous because it awaits the completion of the best time update operation.
     /// </summary>
     async void EndQuiz()
     {
         timerRunning = false;
         finalTime = Mathf.Round((Time.time - quizStartTime) * 100f) / 100f;
-
+        /// Hide all question panels.
         foreach (var p in questionPanels)
             p.SetActive(false);
 
         StopBGM();
         PlaySFX(quizCompleteSound);
-
+        /// Show result panel with score and time.
         resultPanel.SetActive(true);
         resultText.text = "Your Score: " + score + " / " + questionPanels.Length;
         timerText.text = "Time: " + finalTime + " seconds";
-
+        /// Update best time in Firebase if applicable.
         await UpdateBestTime(finalTime);
+        /// Fetch the current best time.
         FetchCurrentBestTime();
     }
 
-
-
     /// <summary>
-    /// Updates the displayed best completion time.
+    /// Updates the best final time display for the local UI element.
     /// </summary>
     public void UpdateBestFinalTime(float newBestTime)
     {
@@ -327,7 +324,7 @@ public class GuitQuizFlowManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Updates the user's best time in Firebase if the new time is better.
+    /// Compares the new completion time with the stored best time in Firebase and updates if necessary.
     /// </summary>
     public async Task<bool> UpdateBestTime(float newTime)
     {
@@ -336,10 +333,10 @@ public class GuitQuizFlowManager : MonoBehaviour
             return false;
 
         newTime = Mathf.Round(newTime * 100f) / 100f;
-
+        /// Retrieve existing player data from Firebase.
         var snapshot = await mDatabaseRef.Child("users").Child(user.UserId).GetValueAsync();
         player existingPlayer = JsonUtility.FromJson<player>(snapshot.GetRawJsonValue());
-
+        /// Update best guitar time if the new time is better.
         if (existingPlayer != null && (existingPlayer.guitBesttime == 0 || newTime < existingPlayer.guitBesttime))
         {
             existingPlayer.guitBesttime = newTime;
@@ -352,7 +349,7 @@ public class GuitQuizFlowManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Fetches the user's best time from Firebase.
+    /// Fetches the user's best guitar time from Firebase.
     /// </summary>
     public void FetchCurrentBestTime()
     {

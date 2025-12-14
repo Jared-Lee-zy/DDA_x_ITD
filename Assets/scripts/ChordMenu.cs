@@ -1,10 +1,7 @@
-///Made By Lim Xue Zhi Conan
-/// Date Of Creation  : 2025-12-04
-/// Function of Script: Manages the chord menu panel visibility.
 using UnityEngine;
-/// <summary>
-/// Manages the chord menu panel visibility.
-/// </summary>
+///Made By Lim Xue Zhi Conan
+/// Date Of Creation  : 7/12/2025
+/// Function of Script: Manages the chord menu panel visibility.
 public class ChordMenu : MonoBehaviour
 {
     public GameObject chordPanel;

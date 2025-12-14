@@ -2,7 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
-
+/// <summary>
+/// Taken from ITD Lesson Material
+/// Date of Addition: 22/11/2025
+/// Function of Script: Manages AR image tracking and spawns corresponding prefabs.
+/// Shows and hides prefabs based on the tracking state of the images.
+/// </summary>
 
 public class ImageTracker : MonoBehaviour
 {

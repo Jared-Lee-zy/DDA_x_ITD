@@ -1,9 +1,8 @@
-///Made By Lim Xue Zhi Conan
-/// Date Of Creation  : 2025-12-03
-/// Function of Script: Plays the audio for a specific chord when triggered.
 using UnityEngine;
 /// <summary>
-/// Plays the audio for a specific chord when triggered.
+///Made By Lim Xue Zhi Conan
+/// Date Of Creation  : 7/12/2025
+/// Function of Script: Plays the audio for a specific chord when triggered.
 /// Attaches an AudioSource component at runtime to play the chord sound.
 /// Removes the AudioSource after playback to clean up.
 /// </summary>

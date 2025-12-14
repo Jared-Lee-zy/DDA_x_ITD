@@ -1,7 +1,3 @@
-///Made By Lim Xue Zhi Conan
-/// Date Of Creation  : 2025-12-11
-/// Function of Script: Manages the piano quiz flow, including question navigation, scoring, timing, audio feedback, and Firebase best-time tracking.
-/// </summary>
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -13,8 +9,9 @@ using Firebase.Extensions;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Manages the flow, scoring, timing, sounds, and Firebase logic
-/// for the Piano Quiz in Chordify.
+///Made By Lim Xue Zhi Conan and Jared Lee Zhengyu
+/// Date Of Creation  : 13/12/2025
+/// Function of Script: Manages the piano quiz flow, including question navigation, scoring, timing, audio feedback, and Firebase best-time tracking.
 /// </summary>
 public class PianoQuizFlowManager : MonoBehaviour
 {
@@ -24,20 +21,40 @@ public class PianoQuizFlowManager : MonoBehaviour
 
     /// <summary>Result panel shown at the end of the quiz.</summary>
     public GameObject resultPanel;
-
+    /// <summary>
+    /// Index of the current question being displayed.
+    /// </summary>
     int currentQuestion = 0;
+    /// <summary>
+    /// User's current score in the quiz.
+    /// </summary>
     int score = 0;
-
+    /// <summary>
+    /// Start time of the quiz for timing purposes.
+    /// </summary>
     float quizStartTime;
+    /// <summary>
+    /// Final time taken to complete the quiz.
+    /// </summary>
     float finalTime;
+    /// <summary>
+    /// User's best completion time for the piano quiz.
+    /// </summary>
     float bestFinalTime;
+    /// <summary>
+    /// Indicates if the quiz timer is currently running.
+    /// </summary>
     bool timerRunning = false;
-
+    /// <summary>
+    /// UI References for displaying best time, timer, and results.
+    /// </summary>
     [Header("UI References")]
     public TextMeshProUGUI bestTimeText;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI resultText;
-
+    /// <summary>
+    /// Firebase references for authentication and database interactions.
+    /// </summary>
     [Header("Firebase")]
     public DatabaseReference mDatabaseRef;
     private FirebaseAuth auth;
@@ -250,7 +267,9 @@ public class PianoQuizFlowManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Ends the quiz, shows results, plays completion sound, and updates Firebase.
+    /// Ends the quiz session, stops the timer, calculates the final completion time,
+    /// displays the result screen, and updates the user's best time in Firebase.
+    /// This method is asynchronous because it awaits the completion of the best time update operation.
     /// </summary>
     async void EndQuiz()
     {
@@ -259,7 +278,7 @@ public class PianoQuizFlowManager : MonoBehaviour
 
         foreach (var p in questionPanels)
             p.SetActive(false);
-
+        /// Show result panel with score and time.
         resultPanel.SetActive(true);
 
         resultText.text = "Your Score: " + score + " / " + questionPanels.Length;
@@ -270,8 +289,9 @@ public class PianoQuizFlowManager : MonoBehaviour
 
         if (sfxSource && quizCompleteSFX)
             sfxSource.PlayOneShot(quizCompleteSFX);
-
+        /// Update best time in Firebase if applicable.
         await UpdateBestTime(finalTime);
+        /// Fetch the current best time.
         FetchCurrentBestTime();
 
         foreach (var p in questionPanels)
@@ -280,7 +300,7 @@ public class PianoQuizFlowManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Updates the displayed best time.
+    /// Updates the best final time display for the local UI element.
     /// </summary>
     public void UpdateBestFinalTime(float newBestTime)
     {
@@ -289,7 +309,7 @@ public class PianoQuizFlowManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Updates the user's best piano quiz time in Firebase.
+    /// Compares the new completion time with the stored best time in Firebase and updates if necessary.
     /// </summary>
     public async Task<bool> UpdateBestTime(float newTime)
     {
@@ -300,6 +320,7 @@ public class PianoQuizFlowManager : MonoBehaviour
 
         try
         {
+            /// Retrieve existing player data from Firebase.
             var snapshot = await mDatabaseRef
                 .Child("users")
                 .Child(user.UserId)
@@ -307,7 +328,7 @@ public class PianoQuizFlowManager : MonoBehaviour
 
             player existingPlayer =
                 JsonUtility.FromJson<player>(snapshot.GetRawJsonValue());
-
+            /// Update best piano time if the new time is better.
             if (existingPlayer == null) return false;
 
             if (existingPlayer.pianoBesttime == 0 || newTime < existingPlayer.pianoBesttime)
@@ -325,8 +346,9 @@ public class PianoQuizFlowManager : MonoBehaviour
         return false;
     }
 
+
     /// <summary>
-    /// Fetches and displays the current best piano quiz time.
+    /// Fetches the user's best piano time from Firebase.
     /// </summary>
     public void FetchCurrentBestTime()
     {

@@ -5,28 +5,57 @@ using Firebase.Database;
 using Firebase.Extensions;
 using TMPro;
 using UnityEngine;
-
+/// <summary>
+/// Made by Jared Lee Zhengyu
+///Date of Creation : 01/12/2025
+///Function of Script: Manages user authentication and database interactions with Firebase.
+///Handles user sign-up and sign-in processes, including error handling and storing user data, such as user's best quiz completeion time for Guitar and Piano.
+/// </summary>
 public class DataBaseManager : MonoBehaviour
 {
+    /// <summary>
+    /// Input field for user email.
+    /// </summary>
     public TMP_InputField emailinput;
+    /// <summary>
+    /// Input field for user password.
+    /// </summary>
     public TMP_InputField passwordinput;
-
+    /// <summary>
+    /// Text field for displaying error messages.
+    /// </summary>
     public TMP_Text errorText;
-
+    /// <summary>
+    /// Canvas GameObject for signup/login UI.
+    /// </summary>
     public GameObject SignupCanvas;
-
-    public static string currentUser;  // NOW STORES UID
-
+    /// <summary>
+    /// Static variable to hold the current user's UID.
+    /// </summary>
+    public static string currentUser;
+    /// <summary>
+    /// Variable to store the user's best time for Guitar quiz.
+    /// </summary>
     private float guitBestTime;
+    /// <summary>
+    /// Variable to store the user's best time for Piano quiz.
+    /// </summary>
     private float pianoBestTime;
-
+    /// <summary>
+    /// Firebase database reference.
+    /// </summary>
     private DatabaseReference mDatabaseRef;
-
+    /// <summary>
+    /// Initializes the Firebase database reference.
+    /// </summary>
     void Start()
     {
         mDatabaseRef = FirebaseDatabase.DefaultInstance.RootReference;
     }
-
+    /// <summary>
+    /// Creates a new user account with the provided email and password.
+    /// Also initializes user data in the database with default best times.
+    /// </summary>
     public void SignUp()
     {
         errorText.text = "";
@@ -34,6 +63,9 @@ public class DataBaseManager : MonoBehaviour
         var createTask = FirebaseAuth.DefaultInstance
             .CreateUserWithEmailAndPasswordAsync(emailinput.text, passwordinput.text);
 
+        /// <summary>
+        /// Creates player details in the database for the specific user..
+        /// </summary>
         void CreatePlayerDetails(string uid, string email, float guitBesttime, float pianoBesttime)
             {
                 player playerinformation = new player(email, guitBesttime, pianoBesttime);
@@ -70,7 +102,11 @@ public class DataBaseManager : MonoBehaviour
             }
         });
     }
-
+    
+    /// <summary>
+    /// Signs in an existing user with the provided email and password.
+    /// Also retrieves and stores the user's best times from the database if successful.
+    /// </summary>
     public void SignIn()
     {
         errorText.text = "";
@@ -95,6 +131,9 @@ public class DataBaseManager : MonoBehaviour
             if (task.IsCompletedSuccessfully)
             {
                 FirebaseUser user = task.Result.User;
+                /// <summary>
+                /// Retrieves and stores the user's best guitar time from the database.
+                /// </summary>
                 mDatabaseRef.Child("users").Child(user.UserId).Child("guitBesttime").GetValueAsync().ContinueWithOnMainThread(t =>
                 {
                     if (t.IsCompleted && t.Result.Exists)
@@ -103,7 +142,9 @@ public class DataBaseManager : MonoBehaviour
                         Debug.Log("Loaded best time: " + guitBestTime);
                     }
                 });
-
+                /// <summary>
+                /// Retrieves and stores the user's best piano time from the database.
+                /// </summary>
                 mDatabaseRef.Child("users").Child(user.UserId).Child("pianoBesttime").GetValueAsync().ContinueWithOnMainThread(t =>
                 {
                     if (t.IsCompleted && t.Result.Exists)
@@ -123,7 +164,9 @@ public class DataBaseManager : MonoBehaviour
             }
         });
     }
-
+    /// <summary>
+    /// Handles authentication errors and displays appropriate user-friendly error messages based on error types.
+    /// </summary>
     private void HandleAuthErrors(AggregateException exception)
     {
         var baseException = exception.GetBaseException();

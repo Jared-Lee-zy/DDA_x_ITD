@@ -1,10 +1,9 @@
-///Made By Lim Xue Zhi Conan
-/// Date Of Creation  : 2025-12-04
-/// Function of Script: Manages the display of chord images and tracks progress.
 using UnityEngine;
 using TMPro;
 /// <summary>
-/// Manages the display of chord images and tracks progress.
+///Made By Lim Xue Zhi Conan
+/// Date Of Creation  : 7/12/2025
+/// Function of Script: Manages the display of chord images and tracks progress.
 /// Shows one chord image at a time and updates the progress text
 /// as the user views different chords. 
 /// </summary>       
