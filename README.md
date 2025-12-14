@@ -1,4 +1,4 @@
-# Chordify
+# Chordly
 ## AR Chord Learning & Ear-Training Application
 ### Readme & Walkthrough
 
@@ -6,7 +6,7 @@
 
 ## 1. Application Overview
 
-**Chordify** is an **Augmented Reality (AR) music learning application** developed using **Unity**.
+**Chordly** is an **Augmented Reality (AR) music learning application** developed using **Unity**.
 It allows users to learn and identify musical chords on **guitar and piano** through:
 
 - AR-based instrument visualisation
@@ -14,7 +14,7 @@ It allows users to learn and identify musical chords on **guitar and piano** thr
 - Audio playback
 - Randomised quizzes with scoring and timing
 
-Chordify is designed for beginners and early intermediate learners, focusing on **visual learning, ear training, and self-assessment**.
+Chordly is designed for beginners and early intermediate learners, focusing on **visual learning, ear training, and self-assessment**.
 
 ---
 
